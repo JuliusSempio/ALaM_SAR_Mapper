@@ -1,0 +1,43 @@
+def generate_temporal_signature(band,
+                                scan_mode,
+                                start_of_crop_reference_year,
+                                date_format,
+                                crop_reference_folder_path,
+                                crop_reference_geometry):
+    
+    crop_reference_list = []
+    for filename in glob.glob(os.path.join(crop_reference_folder_path, '*' + scan_mode + '*.tif')):
+        with open(os.path.join(os.getcwd(), filename), 'r') as f: # open in readonly mode
+            date = re.search("([0-9]{4}[0-9]{2}[0-9]{2})", filename).group()
+            formatted_date = date[:4] + "-" + date[4:6] + "-" + date[6:8]
+            crop_reference_list.append([formatted_date, rxr.open_rasterio(filename,
+                                masked=True
+                                ).rio.clip(
+                                crop_reference_geometry.geometry.values, crop_reference_geometry.crs, from_disk=True
+                                )])
+    # Call for results checking
+    titles = [band]
+    ep.plot_bands(crop_reference_list[0][1].sel(band=band), title=titles)
+    
+    crop_reference_temporal_signature = []
+    for x in crop_reference_list:
+    # Temporary array for converting zeroes to NaN for obtaining actual mean of existing pixels
+        temp = x[1].sel(band=BAND).data
+        temp[temp == 0] = 'nan'
+        crop_reference_temporal_signature.append([(
+            dt.datetime.strptime(x[0], date_format) - dt.datetime.strptime(start_of_crop_reference_year, date_format)).days,
+            np.nanmean(temp)])
+
+    crop_reference_temporal_signature = np.array(crop_reference_temporal_signature)
+    crop_reference_temporal_signature[crop_reference_temporal_signature[:, 0].argsort()]
+    crop_reference_temporal_signature[np.isnan(crop_reference_temporal_signature)] = 0
+    crop_reference_temporal_signature_df = pd.DataFrame(
+        crop_reference_temporal_signature).rename(columns = {0: 'days', 1: 'band ' + str(band)})
+
+    alt.Chart(crop_reference_temporal_signature_df).mark_line().encode(
+        x = 'days',
+        y = 'band ' + str(band)
+    )
+    
+    crop_reference_temporal_signature_1d = np.array([row[1] for row in crop_reference_temporal_signature])
+    return crop_reference_temporal_signature_1d
