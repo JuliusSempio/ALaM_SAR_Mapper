@@ -9,7 +9,9 @@ Being prototypes, the provided codes are eventually going to be subject to chang
   - the boundaries of the study area from which the output map is going to be based on
 * Time-series Sentinel-1 data catalogs in the "img_data" folder
   - the filenames contain the date of acquisition, preferably in the %Y-%m-%d format
- 
+
+Note that in its present state, the code will run slower as the size of the study area also increases. Feel free to play around with the source codes for performance optimization purposes.
+
 For others questions about running the prototype codes, feel free to send an email to either of the following:
 * juliusnoah.sempio@asti.dost.gov.ph
 * jhsempio@alum.up.edu.ph
