@@ -1,0 +1,3 @@
+* Vector features in shapefile format in the "shp" folder
+  - the parcel of crop to be used for generating the reference temporal signature
+  - the boundaries of the study area from which the output map is going to be based on

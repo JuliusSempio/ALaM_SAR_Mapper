@@ -1,0 +1,2 @@
+* Time-series Sentinel-1 data catalogs in the "img_data" folder
+  - the filenames contain the date of acquisition, preferably in the %Y-%m-%d format
