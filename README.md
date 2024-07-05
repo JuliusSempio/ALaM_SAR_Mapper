@@ -3,7 +3,7 @@ Repository for codes developed for using SAR datasets in mapping during my stint
 
 The codes provided herewith are working prototypes of the DTW-based crop mapping tools using catalogs of time-series Sentinel-1 images, initially developed for the ASTI-ALaM Project (https://asti.dost.gov.ph/projects/alam-project/) to assist clients in locating sugarcane fields around the Philippines.
 
-Being prototypes, the provided codes are eventually going to be subject to changes. But they are stable enough to be able to be used as is provided the following datasets have been prepared accordingly:
+Being prototypes, the provided codes are eventually going to be subject to changes. But they are stable enough to be used as is _provided_ the following items have been prepared accordingly:
 * Vector features in shapefile format in the "shp" folder
   - the parcel of crop to be used for generating the reference temporal signature
   - the boundaries of the study area from which the output map is going to be based on
