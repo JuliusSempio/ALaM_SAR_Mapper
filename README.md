@@ -12,6 +12,8 @@ Being prototypes, the provided codes are eventually going to be subject to chang
 
 Note that in its present state, the code will run slower as the size of the study area also increases. Feel free to play around with the source codes for performance optimization purposes.
 
+Test datasets for this specific use case is available at Mendeley Data: https://data.mendeley.com/datasets/kdhpncdfst/2
+
 For others questions about running the prototype codes, feel free to send an email to either of the following:
 * juliusnoah.sempio@asti.dost.gov.ph
 * jhsempio@alum.up.edu.ph
