@@ -1,0 +1,11 @@
+jupyter
+rioxarray
+geopandas
+cartopy
+geocube
+dtw-python
+dtaidistance
+earthpy
+altair
+vega_datasets
+tqdm
