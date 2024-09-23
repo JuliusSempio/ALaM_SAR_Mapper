@@ -12,6 +12,11 @@ Being prototypes, the provided codes are eventually going to be subject to chang
 
 Note that in its present state, the code will run slower as the size of the study area also increases. Feel free to play around with the source codes for performance optimization purposes.
 
+UPDATE! ALaM SAR Mapper Version 2 is now available!
+* Features a single notebook that only runs ipywidgets-based UI elements to operate the mapper
+* Now (theoretically) capable of using time-series Sentinel-1 and PALSAR-2 images as inputs
+* All operating codes are given their respective modules to give the notebook a clean feel
+
 Test datasets for this specific use case are available at Mendeley Data: https://data.mendeley.com/datasets/kdhpncdfst/2
 
 For others questions about running the prototype codes, feel free to send an email to either of the following:
