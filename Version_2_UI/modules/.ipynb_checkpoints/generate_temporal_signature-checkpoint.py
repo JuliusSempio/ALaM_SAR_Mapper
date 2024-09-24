@@ -1,3 +1,13 @@
+import numpy as np
+import pandas as pd
+import os, glob
+import datetime as dt
+import re # module for extracting and tabulating date information from filename
+
+import rioxarray as rxr # module for xarray-based recording of GeoTIFF data
+import xarray as xr
+import earthpy.plot as ep # module for fast plotting of GeoTIFF images
+
 def generate_temporal_signature(platform,
                                 band,
                                 scan_mode,
@@ -7,21 +17,20 @@ def generate_temporal_signature(platform,
                                 crop_reference_geometry):
     
     crop_reference_list = []
-    for filename in glob.glob(os.path.join(crop_reference_folder_path, '*' + scan_mode + '*.tif')):
+    for filename in glob.glob(os.path.join(crop_reference_folder_path, '*.tif')):
         with open(os.path.join(os.getcwd(), filename), 'r') as f: # open in readonly mode
             if(platform == 'Sentinel-1'):
-                date = re.search("([0-9]{4}[0-9]{2}[0-9]{2})", filename).group()
+                date = re.search("([0-9]{4}[0-9]{2}[0-9]{2})", filename[58:]).group()
+                formatted_date = date[:4] + "-" + date[4:6] + "-" + date[6:8]
             elif(platform == 'PALSAR-2'):
-                date = re.search("([0-9]{2}[0-9]{2}[0-9]{2})", filename[52:]).group()
-            print(date)
-            formatted_date = date[:4] + "-" + date[4:6] + "-" + date[6:8]
+                date = re.search("([0-9]{2}[0-9]{2}[0-9]{2})", filename[51:]).group()
+                formatted_date = date[:2] + "-" + date[2:4] + "-" + date[4:6]
             crop_reference_list.append([formatted_date, rxr.open_rasterio(filename,
                                 masked=True
                                 ).rio.clip(
                                 crop_reference_geometry.geometry.values, crop_reference_geometry.crs, from_disk=True
                                 )])
-    print(crop_reference_list)
-    #print("kamote")
+    
     # Call for results checking
     titles = [band]
     ep.plot_bands(crop_reference_list[0][1].sel(band=band), title=titles)
@@ -32,8 +41,9 @@ def generate_temporal_signature(platform,
         temp = x[1].sel(band=band).data
         temp[temp == 0] = 'nan'
         crop_reference_temporal_signature.append([(
-            dt.datetime.strptime(x[0], date_format) - dt.datetime.strptime(start_of_crop_reference_year, date_format)).days,
-            np.nanmean(temp)])
+                dt.datetime.strptime(x[0], date_format) - dt.datetime.strptime(
+                    start_of_crop_reference_year, date_format)).days,
+                    np.nanmean(temp)])
 
     crop_reference_temporal_signature = np.array(crop_reference_temporal_signature)
     crop_reference_temporal_signature[crop_reference_temporal_signature[:, 0].argsort()]

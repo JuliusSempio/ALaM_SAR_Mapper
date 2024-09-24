@@ -5,7 +5,9 @@ cartopy
 geocube
 dtw-python
 dtaidistance
+ipyfilechooser
 earthpy
 altair
+#altair-viewer
 vega_datasets
 tqdm

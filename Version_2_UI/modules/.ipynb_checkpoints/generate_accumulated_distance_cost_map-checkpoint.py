@@ -1,4 +1,17 @@
+import numpy as np
+import pandas as pd
+import datetime as dt
+from tqdm import tqdm # module for visual progress bars
+
+import math # module for quick detection of NaN pixels
+
+from dtaidistance import dtw # the mother module for obtaining the distance accumulated cost
+# from dtaidistance import dtw_ndim # accessory module for testing multi-dimensional DTW
+# from dtaidistance import dtw_visualisation as dtwvis # accessory module for visualizing DTW results
+
+
 def generate_accumulated_distance_cost_map(test_data_list,
+                                           platform,
                                            band,
                                            study_area_geom,
                                            start_of_test_year,
@@ -6,6 +19,8 @@ def generate_accumulated_distance_cost_map(test_data_list,
                                            crop_parcel_reference_temporal_signature_1d,
                                            dtw_window_size,
                                            dtw_psi,
+                                           dtw_max_dist,
+                                           dtw_use_pruning,
                                            img_dimensions,
                                            lon_increment,
                                            lat_increment):
@@ -43,10 +58,14 @@ def generate_accumulated_distance_cost_map(test_data_list,
                 #pixel_timeseries_array[pixel_timeseries_array[:, 0].argsort()]
                 pixel_timeseries_array_1d = np.array([row[1] for row in pixel_timeseries_array])
                 distance_1d = dtw.distance(
-                    pixel_timeseries_array_1d,
-                    crop_parcel_reference_temporal_signature_1d,
+                    s1 = pixel_timeseries_array_1d,
+                    s2 = crop_parcel_reference_temporal_signature_1d,
+                    only_ub = False,
                     window=dtw_window_size,
-                    psi=dtw_psi)
+                    psi=dtw_psi
+                    #max_dist = dtw_max_dist,
+                    #use_pruning = dtw_use_pruning
+                )
                 pixel_cost_array_df.loc[len(pixel_cost_array_df)] = [distance_1d, col, lon_track, row, lat_track]
                 lat_track = lat_track - lat_increment
             

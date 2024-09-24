@@ -58,12 +58,12 @@ def generate_accumulated_distance_cost_map(test_data_list,
                 #pixel_timeseries_array[pixel_timeseries_array[:, 0].argsort()]
                 pixel_timeseries_array_1d = np.array([row[1] for row in pixel_timeseries_array])
                 distance_1d = dtw.distance(
-                    pixel_timeseries_array_1d,
-                    crop_parcel_reference_temporal_signature_1d,
+                    s1 = pixel_timeseries_array_1d,
+                    s2 = crop_parcel_reference_temporal_signature_1d,
+                    only_ub = False,
                     window=dtw_window_size,
                     psi=dtw_psi,
-                    #max_dist = dtw_max_dist,
-                    use_pruning = dtw_use_pruning
+                    #use_pruning = dtw_use_pruning
                 )
                 pixel_cost_array_df.loc[len(pixel_cost_array_df)] = [distance_1d, col, lon_track, row, lat_track]
                 lat_track = lat_track - lat_increment
